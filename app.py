@@ -5,9 +5,11 @@ import uuid
 import io
 import sys
 import random
+import os
 
 app = Flask(__name__)
-app.secret_key = 'replace_with_strong_random_secret'
+
+app.secret_key = os.getenv("SECRET_KEY", "default-key")
 
 board_store = {}
 
@@ -71,5 +73,9 @@ def reset():
         board_store[session_id] = chess.Board()
     return jsonify({"result": "Board reset", "fen": board_store[session_id].fen(), "board_svg": chess.svg.board(board=board_store[session_id])})
 
-if __name__ == '__main__':
-    app.run(debug=True)
+
+if __name__ == "__main__":
+    import os
+    port = int(os.environ.get("PORT", 10000))  # Render sets the PORT env variable
+    app.run(host="0.0.0.0", port=port)
+    
