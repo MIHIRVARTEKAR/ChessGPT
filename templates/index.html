@@ -1,121 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Code Your Chess Moves - Learn Programming with Chess</title>
+    <!-- Basic Meta -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- SEO Meta -->
+    <title>Chess-GPT | Code Your Chess Moves</title>
+    <meta name="description" content="Still playing boring, old Chess? Time to switch to Chess-GPT." />
+    <meta name="keywords" content="chess, gpt, code, python, learn programming, chess AI, chess gpt, code chess, chess game" />
+    <meta name="author" content="Chess-GPT Team" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Chess-GPT | Code Your Chess Moves" />
+    <meta property="og:description" content="Still playing boring, old Chess? Time to switch to Chess-GPT." />
+    <meta property="og:image" content="{{ url_for('static', filename='metalogo.png') }}" />
+    <meta property="og:url" content="https://chess-gpt.com" />
+    <meta property="og:type" content="website" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Chess-GPT | Code Your Chess Moves" />
+    <meta name="twitter:description" content="Still playing boring, old Chess? Time to switch to Chess-GPT." />
+    <meta name="twitter:image" content="{{ url_for('static', filename='metalogo.png') }}" />
+
+    <!-- Adsense (Replace with your actual publisher ID) -->
+    <script data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- CodeMirror CSS for code editor -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/theme/monokai.min.css">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8957735818115212"
-     crossorigin="anonymous"></script>
-    <!-- Basic Meta Tags -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Play ChessGPT – A smart chess game that teaches and plays with you!">
-    <meta name="keywords" content="chess, ChessGPT, online chess, AI chess teacher">
-    <meta name="author" content="Your Name or Brand">
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="ChessGPT – Your Smart Chess Teacher">
-    <meta property="og:description" content="Play chess online with an intelligent assistant that helps you improve.">
-    <meta property="og:image" content=""C:\Users\Mihir\OneDrive\Desktop\ChessGPT\static\metalogo.png"">
-    <meta property="og:url" content="https://chess-gpt.com">
-    <meta property="og:type" content="website">
-    <!-- Twitter Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="ChessGPT – Your Smart Chess Teacher">
-    <meta name="twitter:description" content="Play chess with an AI that teaches you.">
-    <meta name="twitter:image" content=""C:\Users\Mihir\OneDrive\Desktop\ChessGPT\static\metalogo.png"">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" />
 
-
+    <!-- CodeMirror CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/theme/material-darker.min.css" />
 
     <style>
         body {
-            background-color: #f5f5f5;
+            background-color: #0e1117;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #f5f5f5;
         }
-        .board-container {
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            background-color: white;
-            padding: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        .board-container, .code-editor, .tutorial-section, .ad-container {
+            background-color: #1e1e2f;
+            border: 1px solid #2e2e3e;
+            border-radius: 8px;
+            padding: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+        }
+        .CodeMirror {
+            height: 300px;
+            font-size: 14px;
+            background-color: #1e1e2f;
+            color: #ffffff;
         }
         #board-svg {
             width: 100%;
             height: auto;
         }
-        .code-editor {
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            background-color: white;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .CodeMirror {
-            height: 300px;
-            font-size: 14px;
-            border-radius: 4px;
-        }
         .game-status {
-            margin-top: 10px;
+            background-color: #1c2a2a;
             padding: 10px;
             border-radius: 4px;
-            background-color: #e9f7ef;
-        }
-        .tutorial-section {
-            background-color: white;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 15px;
-            margin-bottom: 20px;
         }
         .move-history {
             max-height: 200px;
             overflow-y: auto;
+            background-color: #1e1e2f;
         }
-        .btn-success {
-            background-color: #28a745;
-        }
-        .header {
-            background-color: #2c3e50;
+        .header, .footer {
+            background-color: #111827;
             color: white;
             padding: 20px 0;
-            margin-bottom: 30px;
-        }
-        .footer {
-            background-color: #2c3e50;
-            color: white;
-            padding: 20px 0;
-            margin-top: 30px;
             text-align: center;
+        }
+        pre {
+            background-color: #151922;
+            color: #f8f8f2;
         }
     </style>
 </head>
+
 <body>
-    <!-- Header -->
     <div class="header">
         <div class="container">
-            <h1>Code Your Chess Moves</h1>
-            <p>Learn programming by coding your chess moves in Python!</p>
+            <h1>Chess-GPT</h1>
+            <p>Still playing boring, old Chess? Time to switch to Chess-GPT</p>
         </div>
     </div>
 
     <div class="container">
-        <!-- Top Ad Banner -->
-        <div class="ad-container">
-            <h5>Advertisement</h5>
-            <!-- Replace with actual ad code -->
-            <div id="top-ad-slot">
-                <!-- Ad will be inserted here -->
-            </div>
+        <!-- Top Ad -->
+        <div class="ad-container text-center">
+            <ins class="adsbygoogle" style="display:block" data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
         </div>
 
         <div class="row">
             <div class="col-md-8">
-                <!-- Main Content -->
                 <div class="row">
                     <!-- Chess Board -->
                     <div class="col-md-7">
@@ -127,7 +113,6 @@
                             </div>
                         </div>
                     </div>
-
                     <!-- Code Editor -->
                     <div class="col-md-5">
                         <div class="code-editor">
@@ -135,7 +120,7 @@
                             <textarea id="code-editor">
 # Example: Move a pawn from e2 to e4
 move_piece('e2', 'e4')
-</textarea>
+                            </textarea>
                             <div class="mt-3">
                                 <button id="run-code" class="btn btn-success">Run Code</button>
                                 <button id="get-hint" class="btn btn-info">Get Hint</button>
@@ -145,52 +130,43 @@ move_piece('e2', 'e4')
                     </div>
                 </div>
 
-                <!-- Output Section -->
-                <div class="row mt-3">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h5>Output</h5>
-                            </div>
-                            <div class="card-body">
-                                <pre id="output" class="bg-dark text-light p-3" style="min-height: 100px; border-radius: 4px;">Welcome to Code Your Chess! Run your code to make a move.</pre>
-                            </div>
-                        </div>
+                <!-- Output -->
+                <div class="card mt-3 bg-dark text-white">
+                    <div class="card-header">
+                        <h5>Output</h5>
+                    </div>
+                    <div class="card-body">
+                        <pre id="output">Welcome to Chess-GPT! Run your code to make a move.</pre>
                     </div>
                 </div>
 
                 <!-- Sidebar Ad -->
-                <div class="ad-container mt-3">
-                    <h5>Advertisement</h5>
-                    <!-- Replace with actual ad code -->
-                    <div id="sidebar-ad-slot">
-                        <!-- Ad will be inserted here -->
-                    </div>
+                <div class="ad-container mt-3 text-center">
+                    <ins class="adsbygoogle" style="display:block" data-ad-format="auto"
+                         data-full-width-responsive="true"></ins>
                 </div>
             </div>
 
+            <!-- Right Column -->
             <div class="col-md-4">
-                <!-- Side Content -->
                 <div class="tutorial-section">
                     <h4>How to Play</h4>
-                    <p>Use Python code to move your chess pieces (white). The computer will automatically play black.</p>
-                    <p>To move a piece, use the <code>move_piece(start, end)</code> function:</p>
+                    <p>Use Python code to move your chess pieces (white). The computer will play black.</p>
+                    <p>Use: <code>move_piece(start, end)</code></p>
                     <ul>
-                        <li><code>start</code>: The starting position (e.g., 'e2')</li>
-                        <li><code>end</code>: The target position (e.g., 'e4')</li>
+                        <li><code>start</code>: e.g., 'e2'</li>
+                        <li><code>end</code>: e.g., 'e4'</li>
                     </ul>
-                    <h5>Example Moves:</h5>
-                    <pre class="bg-light p-2">
-# Move pawn from e2 to e4
+                    <pre>
+# Move a pawn
 move_piece('e2', 'e4')
 
-# Move knight from g1 to f3
+# Move a knight
 move_piece('g1', 'f3')
                     </pre>
                 </div>
 
-                <!-- Move History -->
-                <div class="card mt-3">
+                <div class="card mt-3 bg-dark text-white">
                     <div class="card-header">
                         <h5>Move History</h5>
                     </div>
@@ -199,31 +175,24 @@ move_piece('g1', 'f3')
                     </div>
                 </div>
 
-                <!-- Side Ad -->
-                <div class="ad-container mt-3">
-                    <h5>Advertisement</h5>
-                    <!-- Replace with actual ad code -->
-                    <div id="side-ad-slot">
-                        <!-- Ad will be inserted here -->
-                    </div>
+                <!-- Ad -->
+                <div class="ad-container mt-3 text-center">
+                    <ins class="adsbygoogle" style="display:block" data-ad-format="auto"
+                         data-full-width-responsive="true"></ins>
                 </div>
             </div>
         </div>
 
-        <!-- Bottom Ad Banner -->
-        <div class="ad-container mt-4">
-            <h5>Advertisement</h5>
-            <!-- Replace with actual ad code -->
-            <div id="bottom-ad-slot">
-                <!-- Ad will be inserted here -->
-            </div>
+        <!-- Bottom Ad -->
+        <div class="ad-container mt-4 text-center">
+            <ins class="adsbygoogle" style="display:block" data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
         </div>
     </div>
 
-    <!-- Footer -->
     <div class="footer">
         <div class="container">
-            <p>© 2025 Code Your Chess - Learn Programming with Chess</p>
+            <p>© 2025 Chess-GPT - Code Your Chess Moves</p>
         </div>
     </div>
 
@@ -231,173 +200,81 @@ move_piece('g1', 'f3')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/mode/python/python.min.js"></script>
-
     <script>
-        // Initialize CodeMirror
         const editor = CodeMirror.fromTextArea(document.getElementById("code-editor"), {
             mode: "python",
-            theme: "monokai",
+            theme: "material-darker",
             lineNumbers: true,
             indentUnit: 4,
             tabSize: 4,
-            indentWithTabs: false,
             autoCloseBrackets: true
         });
 
-        // History for moves
         const moveHistory = [];
 
-        // Run code button
-        document.getElementById("run-code").addEventListener("click", function() {
+        function updateMoveHistory(userCode, computerMove = null) {
+            const container = document.getElementById("move-history");
+            if (moveHistory.length === 0) container.innerHTML = "";
+            moveHistory.push({ user: userCode, computer: computerMove });
+            const moveItem = document.createElement("div");
+            moveItem.innerHTML = `<strong>You:</strong> ${userCode}<br>${computerMove ? `<strong>Computer:</strong> ${computerMove}` : ''}`;
+            container.appendChild(moveItem);
+        }
+
+        function updateGameStatus(data) {
+            const status = document.getElementById("game-status");
+            if (data.status) {
+                status.innerHTML = `<p>${data.status}</p>`;
+            }
+        }
+
+        document.getElementById("run-code").addEventListener("click", () => {
             const code = editor.getValue();
             document.getElementById("output").textContent = "Running code...";
-            
+
             fetch("/move", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-                body: new URLSearchParams({
-                    code: code
-                })
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: new URLSearchParams({ code })
             })
-            .then(response => response.json())
+            .then(res => res.json())
             .then(data => {
-                // Update the board
                 document.getElementById("board-svg").innerHTML = data.board_svg;
                 document.getElementById("output").textContent = data.result;
-                
-                // Update game status
                 updateGameStatus(data);
-                
-                // Update move history
-                const movesMatch = data.result.match(/Computer's move: ([a-h][1-8][a-h][1-8])/);
-                if (movesMatch) {
-                    const compMove = movesMatch[1];
-                    updateMoveHistory(code, compMove);
-                } else {
-                    // Just update with user code if computer didn't move
-                    updateMoveHistory(code);
-                }
+                const match = data.result.match(/Computer's move: ([a-h][1-8][a-h][1-8])/);
+                updateMoveHistory(code, match ? match[1] : null);
             })
-            .catch(error => {
-                document.getElementById("output").textContent = "Error: " + error;
+            .catch(err => {
+                document.getElementById("output").textContent = "Error: " + err;
             });
         });
 
-        // Get hint button
-        document.getElementById("get-hint").addEventListener("click", function() {
+        document.getElementById("get-hint").addEventListener("click", () => {
             fetch("/hint")
-            .then(response => response.json())
+            .then(res => res.json())
             .then(data => {
-                const currentOutput = document.getElementById("output").textContent;
-                document.getElementById("output").textContent = currentOutput + "\n\nHint: " + data.hint;
-                if (data.code_hint) {
-                    editor.setValue(data.code_hint);
-                }
+                document.getElementById("output").textContent += `\n\nHint: ${data.hint}`;
+                if (data.code_hint) editor.setValue(data.code_hint);
             })
-            .catch(error => {
-                document.getElementById("output").textContent += "\nError getting hint: " + error;
+            .catch(err => {
+                document.getElementById("output").textContent += "\nError getting hint: " + err;
             });
         });
 
-        // Reset board button
-        document.getElementById("reset-board").addEventListener("click", function() {
-            fetch("/reset", {
-                method: "POST"
-            })
-            .then(response => response.json())
+        document.getElementById("reset-board").addEventListener("click", () => {
+            fetch("/reset", { method: "POST" })
+            .then(res => res.json())
             .then(data => {
                 document.getElementById("board-svg").innerHTML = data.board_svg;
                 document.getElementById("output").textContent = "Board reset. Ready to start a new game!";
                 document.getElementById("game-status").innerHTML = "<p>Your turn (White). Write code to make your move!</p>";
-                // Clear move history
                 document.getElementById("move-history").innerHTML = "<p class='text-muted'>No moves yet.</p>";
                 moveHistory.length = 0;
-            })
-            .catch(error => {
-                document.getElementById("output").textContent = "Error resetting: " + error;
             });
         });
 
-        // Update game status based on response
-        function updateGameStatus(data) {
-            let statusHTML = "";
-            
-            if (data.game_over) {
-                if (data.checkmate) {
-                    const winner = data.result.includes("1-0") ? "White" : "Black";
-                    statusHTML = `<div class="alert alert-success">Checkmate! ${winner} wins!</div>`;
-                } else if (data.stalemate) {
-                    statusHTML = `<div class="alert alert-warning">Game over - Stalemate!</div>`;
-                } else if (data.insufficient_material) {
-                    statusHTML = `<div class="alert alert-warning">Game over - Draw due to insufficient material!</div>`;
-                } else {
-                    statusHTML = `<div class="alert alert-warning">Game over!</div>`;
-                }
-            } else if (data.check) {
-                statusHTML = `<div class="alert alert-danger">Check! Protect your king!</div>`;
-            } else {
-                // Normal turn
-                statusHTML = `<p>Your turn (White). Write code to make your move!</p>`;
-            }
-            
-            document.getElementById("game-status").innerHTML = statusHTML;
-        }
-
-        // Update move history
-        function updateMoveHistory(userCode, computerMove = null) {
-            const moveHistoryEl = document.getElementById("move-history");
-            
-            // Extract the actual move from user code
-            const match = userCode.match(/move_piece\(['"](.*?)['"],\s*['"](.*?)['"]\)/);
-            if (match) {
-                const moveNum = moveHistory.length / 2 + 1;
-                const start = match[1];
-                const end = match[2];
-                const userMove = `${start}${end}`;
-                
-                let historyItem = document.createElement("div");
-                historyItem.className = "mb-2";
-                historyItem.innerHTML = `<strong>${moveNum}.</strong> White: ${userMove}`;
-                
-                if (computerMove) {
-                    historyItem.innerHTML += ` | Black: ${computerMove}`;
-                }
-                
-                // Clear "no moves yet" message if it's there
-                if (moveHistory.length === 0) {
-                    moveHistoryEl.innerHTML = "";
-                }
-                
-                moveHistoryEl.appendChild(historyItem);
-                moveHistory.push(userMove);
-                if (computerMove) moveHistory.push(computerMove);
-                
-                // Scroll to bottom
-                moveHistoryEl.scrollTop = moveHistoryEl.scrollHeight;
-            }
-        }
-
-        // Ad integration placeholder - replace with actual ad code
-        function loadAds() {
-            // This is where you'd integrate your actual ad code
-            console.log("Loading ads...");
-            
-            // Example of how you might load Google AdSense
-            /*
-            (adsbygoogle = window.adsbygoogle || []).push({});
-            (adsbygoogle = window.adsbygoogle || []).push({});
-            (adsbygoogle = window.adsbygoogle || []).push({});
-            (adsbygoogle = window.adsbygoogle || []).push({});
-            */
-        }
-
-        // Load ads after page is ready
-        window.addEventListener('load', loadAds);
+        (adsbygoogle = window.adsbygoogle || []).push({});
     </script>
-
-    <!-- Ad Script Placeholder - Replace with your actual ad provider script -->
-    <script async src="https://your-ad-provider.com/ads.js"></script>
 </body>
 </html>
