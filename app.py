@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, jsonify, session
+from flask import send_from_directory
 import chess
 import chess.svg
 import uuid
