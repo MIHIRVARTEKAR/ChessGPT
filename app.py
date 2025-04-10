@@ -73,6 +73,10 @@ def reset():
         board_store[session_id] = chess.Board()
     return jsonify({"result": "Board reset", "fen": board_store[session_id].fen(), "board_svg": chess.svg.board(board=board_store[session_id])})
 
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 if __name__ == "__main__":
     import os
