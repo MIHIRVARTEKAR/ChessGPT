@@ -78,6 +78,18 @@ def reset():
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'),
                                'favicon.ico', mimetype='image/vnd.microsoft.icon')
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+@app.route('/privacy-policy')
+def privacy():
+    return render_template('privacy-policy.html')
+
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')
+
 
 if __name__ == "__main__":
     import os
